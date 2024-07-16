@@ -1,12 +1,14 @@
+import { useReducer } from "react"
+import { initialState, orderReducer } from "../reducers/orders-reducer"
 import { menuItems } from "../data/db"
-import useOrder from "../hooks/useOrder"
 import MenuItem from "./MenuItem"
 import OrderContets from "./OrderContets"
 import TipsPercentageForm from "./TipsPercentageForm"
 import OrderTotals from "./OrderTotals"
 
+
 const Main = () => {
-    const { addItem ,order,removeItem,tip, setTip,placeOrder}= useOrder()
+  const [state,dispatch]=useReducer(orderReducer,initialState)
   return (
     <main className=' max-w-7xl mx-auto py-20 grid md:grid-cols-2 ' >
         <div className=' p-5 '>
@@ -16,26 +18,26 @@ const Main = () => {
                     <MenuItem 
                     key={item.id}
                     item={item}
-                    addItem={addItem}
+                    dispatch={dispatch}
                     />
                 ))}
             </div>
         </div>
         <div className= ' border border-dashed border-slate-300 p-50 rounded-lg space-y-10'>
-          {order.length > 0 ? (
+          {state.order.length > 0 ? (
            <>
           <OrderContets 
-           order={order}
-           removeItem={removeItem}
+           order={state.order}
+           dispatch={dispatch}
            />
            <TipsPercentageForm
-            setTip={setTip}
-            tip={tip}
+             dispatch={dispatch}
+            tip={state.tip}
            />
            <OrderTotals
-             order={order}
-             tip={tip}
-             placeOrder={placeOrder}
+             order={state.order}
+             tip={state.tip}
+             dispatch={dispatch}
            />
            </> 
           ): 
